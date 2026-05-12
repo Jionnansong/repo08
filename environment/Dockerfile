@@ -3,14 +3,14 @@ FROM node:20-alpine AS frontend-builder
 WORKDIR /app/frontend
 
 # Copy frontend packages
-COPY environment/frontend/package*.json ./
+COPY repo/frontend/package*.json ./
 
 # Install dependencies with lockfile consistency and speed
 RUN npm config set registry https://registry.npmmirror.com
 RUN npm ci
 
 # Copy frontend source and build
-COPY environment/frontend/ .
+COPY repo/frontend/ .
 RUN npm run build
 
 # Stage 2: Prepare Backend
@@ -18,7 +18,7 @@ FROM node:20-alpine AS backend-builder
 WORKDIR /app/backend
 
 # Copy backend packages
-COPY environment/backend/package*.json ./
+COPY repo/backend/package*.json ./
 
 # Install backend dependencies (excluding devDependencies to shrink image)
 RUN npm config set registry https://registry.npmmirror.com
@@ -28,7 +28,7 @@ RUN npm ci --omit=dev
 RUN npm install -D prisma@5 --registry=https://registry.npmmirror.com
 
 # Copy backend source
-COPY environment/backend/ .
+COPY repo/backend/ .
 
 # Run prisma generation
 RUN npx prisma generate
@@ -41,18 +41,18 @@ WORKDIR /app
 RUN apk add --no-cache openssl
 
 # Copy built frontend static files
-COPY --from=frontend-builder /app/frontend/dist /app/environment/frontend/dist
+COPY --from=frontend-builder /app/frontend/dist /app/repo/frontend/dist
 
 # Copy prepared backend files
-COPY --from=backend-builder /app/backend /app/environment/backend
+COPY --from=backend-builder /app/backend /app/repo/backend
 
-# Set up environment
+# Set up repo
 ENV NODE_ENV=production
 ENV PORT=3000
 EXPOSE 3000
 
 # Set running directory to backend
-WORKDIR /app/environment/backend
+WORKDIR /app/repo/backend
 
 # Initialize SQLite database on container start and launch the server
 CMD ["sh", "-c", "npx prisma db push && npm start"]
