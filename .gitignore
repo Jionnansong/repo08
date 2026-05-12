@@ -1,0 +1,33 @@
+# Node modules
+node_modules/
+**/node_modules/
+
+# Built assets
+dist/
+**/dist/
+build/
+**/build/
+
+# Local database and uploads files
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+environment/backend/uploads/*
+!environment/backend/uploads/.gitkeep
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories
+.vscode/
+.idea/
+.DS_Store

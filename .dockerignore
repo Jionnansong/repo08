@@ -1,0 +1,14 @@
+# Ignore node modules
+**/node_modules
+**/.env
+**/dist
+**/build
+**/.vscode
+**/.idea
+**/.git
+**/.DS_Store
+
+# Ignore local sqlite databases
+environment/backend/prisma/dev.db*
+environment/backend/dev.db*
+environment/backend/uploads/*
