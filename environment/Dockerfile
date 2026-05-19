@@ -51,8 +51,8 @@ ENV NODE_ENV=production
 ENV PORT=3000
 EXPOSE 3000
 
-# Set running directory to backend
-WORKDIR /app/repo/backend
+# Set running directory to app root
+WORKDIR /app
 
 # Initialize SQLite database on container start and launch the server
-CMD ["sh", "-c", "npx prisma db push && npm start"]
+CMD ["sh", "-c", "cd repo/backend && npx prisma db push && npm start"]
